@@ -10,25 +10,16 @@ import com.kata.tdd.user.UserSession;
 public class TripService {
 
 	public List<Trip> getTripsByUser(User user) throws UserNotLoggedInException {
+		User loggedUser = getLoggedUser();
 
-		List<Trip> tripList = new ArrayList<>();
-		User loggedUser = getLoggedUser(); // ceci va lancer une exception
-		boolean isFriend = false;
-
-		if (loggedUser != null) {
-			for (User friend : user.getFriends()) {
-				if (friend.equals(loggedUser)) {
-					isFriend = true;
-					break;
-				}
-			}
-			if (isFriend) {
-				tripList = tripBy(user);
-			}
-			return tripList;
-		} else {
+		if (loggedUser == null) {
 			throw new UserNotLoggedInException();
 		}
+		return user.isFriendsWith(loggedUser) ? tripBy(user) : noFriends();
+	}
+
+	public ArrayList<Trip> noFriends() {
+		return new ArrayList<>();
 	}
 
 	protected List<Trip> tripBy(User user) {

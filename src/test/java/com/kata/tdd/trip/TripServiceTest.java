@@ -1,5 +1,6 @@
 package com.kata.tdd.trip;
 
+import static com.kata.tdd.trip.UserBuilder.aUser;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class TripServiceTest {
 	public void shouldNotReturnAnyTripsWhenUsersAreNotFriends() {
 
 		// @formatter:off
-		User friend = UserBuilder.aUser()
+		User friend = aUser()
 						.withFriends(TERRY)
 						.withTrips(TO_BRAZIL)
 						.build();
@@ -47,7 +48,7 @@ public class TripServiceTest {
 	public void shouldReturnListOfTripsWhenUsersAreFriends() {
 		// @formatter:off
 		loggedInUser = REGISTERED_USER;
-		User friend = UserBuilder.aUser()
+		User friend = aUser()
 						.withFriends(TERRY,loggedInUser)
 						.withTrips(TO_BRAZIL,TO_LONDON)
 						.build();
