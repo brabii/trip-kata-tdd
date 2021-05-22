@@ -29,24 +29,30 @@ public class TripServiceTest {
 
 	@Test
 	public void shouldNotReturnAnyTripsWhenUsersAreNotFriends() {
-		User friend = new User();
-		tripService = new TestableTripService();
+
+		// @formatter:off
+		User friend = UserBuilder.aUser()
+						.withFriends(TERRY)
+						.withTrips(TO_BRAZIL)
+						.build();
+		// @formatter:on
+
 		loggedInUser = REGISTERED_USER;
-		friend.addFriend(TERRY);
-		friend.addTrip(TO_BRAZIL);
+		tripService = new TestableTripService();
 		List<Trip> trips = tripService.getTripsByUser(friend);
 		assertTrue(trips.size() == 0);
 	}
 
 	@Test
 	public void shouldReturnListOfTripsWhenUsersAreFriends() {
-		User friend = new User();
-		tripService = new TestableTripService();
+		// @formatter:off
 		loggedInUser = REGISTERED_USER;
-		friend.addFriend(TERRY);
-		friend.addTrip(TO_BRAZIL);
-		friend.addFriend(loggedInUser);
-		friend.addTrip(TO_LONDON);
+		User friend = UserBuilder.aUser()
+						.withFriends(TERRY,loggedInUser)
+						.withTrips(TO_BRAZIL,TO_LONDON)
+						.build();
+		// @formatter:on
+		tripService = new TestableTripService();
 		List<Trip> trips = tripService.getTripsByUser(friend);
 		assertTrue(trips.size() == 2);
 	}
